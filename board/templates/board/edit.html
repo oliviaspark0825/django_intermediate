@@ -1,0 +1,16 @@
+{% extends 'board/base.html' %}
+   {% block body %}
+   <h1>EDIT</h1>
+   <!--<form action="/board/{{ board.pk }}/update/" method="POST">-->
+   <form action="{% url 'board:update' board.pk %}" method="POST">
+    
+       {% csrf_token %}
+       <label for="title" >TITLE</label>
+       <input type="text" id='title' name="title" value="{{ board.title }}"/>
+       <label for="content">CONTENT</label>
+       <input type="text" id='content'name="content" value="{{ board.content }}"/>
+       <input type="submit" name="제출"/>
+   </form>
+   <a href="/board/"> [BACK]</a>
+    {% endblock %}
+    
