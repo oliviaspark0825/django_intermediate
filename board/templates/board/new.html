@@ -1,8 +1,8 @@
 {% extends 'board/base.html' %}
    {% block body %}
    <h1>NEW</h1>
-   <form action="{% url 'board:create' %}" method="POST">
-    
+   <form action="{% url 'board:new' %}" method="POST">
+    <!--액션을 지워도 됨, 어차피 new의 위치에 와있었고 post 이니까 자신의 위치로 돌아감-->
        {% csrf_token %}
        <label for="title">TITLE</label>
        <input type="text" id='title' name="title"/>
@@ -14,3 +14,4 @@
    <a href="{% url 'board:index' %}"> [BACK]</a>
     {% endblock %}
     
+<!--get으로 들어오면 일단 완성이 되고, 아 저 주소로 들어가야하는구나 하고 현재 자신의 위치로 돌아감  new 위치에서의 행동은 post 이니까 -->

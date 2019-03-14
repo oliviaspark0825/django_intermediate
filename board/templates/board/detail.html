@@ -13,8 +13,12 @@
         <!--board라는 앱의 edit-->
         <a href="{% url 'board:edit' board.pk %}">[수정]</a>
         <!--<a href="/board/{{ board.pk }}/edit/">[수정]</a>-->
-        <a href="{% url 'board:delete' board.pk %}" onclick="return confirm('R U SURE?')">[삭제]</a>
-    
+        <!--<a href="{% url 'board:delete' board.pk %}" onclick="return confirm('R U SURE?')">[삭제]</a>-->
+        <!--버튼 자체를 form으로 바꾸기-->
+        <form action='{% url 'board:delete' board.pk %}' method='POST' style='display: inline'onsubmit="return confirm('R U SURE?');">
+            {% csrf_token %}
+            <input type="submit" value="[삭제]"/>
+        </form>
         <!--<a href="/board/{{ board.pk }}/delete/" onclick="return confirm('R U SURE?')">[삭제]</a>-->
         <hr>
     {% endblock %}

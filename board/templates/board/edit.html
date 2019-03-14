@@ -2,8 +2,8 @@
    {% block body %}
    <h1>EDIT</h1>
    <!--<form action="/board/{{ board.pk }}/update/" method="POST">-->
-   <form action="{% url 'board:update' board.pk %}" method="POST">
-    
+   <form action="{% url 'board:edit' board.pk %}" method="POST">
+    <!--여기도 action 지워도 됨-->
        {% csrf_token %}
        <label for="title" >TITLE</label>
        <input type="text" id='title' name="title" value="{{ board.title }}"/>
