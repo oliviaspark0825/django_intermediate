@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Board
+from .models import Board, Comment
 # from pprint import pprint
 # Create your views here.
 def index(request):
@@ -35,15 +35,18 @@ def new(request):
         return render(request, 'board/new.html')
     
 
-def detail(request, pk):
-    board = Board.objects.get(pk=pk)
+def detail(request, board_pk):
+    board = Board.objects.get(pk=board_pk)
+    comments = board.comment_set.all()
+    
     context = {
         'board' : board,
+        'comments' : comments,
     }
     return render(request,'board/detail.html', context)
     
-def delete(request,pk):
-    board = Board.objects.get(pk=pk)
+def delete(request,board_pk):
+    board = Board.objects.get(pk=board_pk)
     if request.method == 'POST':
         
         board.delete()
@@ -54,17 +57,41 @@ def delete(request,pk):
     # 포스트 방식으로만 삭제할 수 있게
     
     
-    
-def edit(request, pk):
+def edit(request, board_pk):
     if request.method == 'POST':
         # UPDATE
-        board = Board.objects.get(pk=pk)
+        board = Board.objects.get(pk=board_pk)
         board.title = request.POST.get('title')
         board.content = request.POST.get('content')
         board.save()
         # return redirect(f'/board/{ board.pk }/')
         return redirect(f'board:detail', board.pk)
     else:#EDIT
-        board = Board.objects.get(pk=pk)
+        board = Board.objects.get(pk=board_pk)
         return render(request, 'board/edit.html', {'board': board})
-        
+
+
+
+# 댓글 함수들 
+
+
+def comments_create(request,board_pk):
+    # 댓글을 달 게시물 가지고오기
+    board = Board.objects.get(pk = board_pk)
+    # form 에서 넘어온 comment data
+    content = request.POST.get('content')
+    
+    # 댓글 생성 및 저장
+    # board에 board 전체 객체를 집어넣으면, 지가 알아서 빼냄
+    # orm은 객체를 넣어야 함
+    comment = Comment(board=board, content = content)
+    comment.save()
+    return redirect('board:detail', board.pk)
+    
+def comments_delete(request, board_pk, comment_pk):
+    comment = Comment.objects.get(pk = comment_pk)
+    if request.method == 'POST':
+        comment.delete()
+        return redirect(f'board:detail', board_pk)
+    else:
+        return redirect(f'board:detail', board_pk)

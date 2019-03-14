@@ -2,7 +2,7 @@
    {% block body %}
    <h1>NEW</h1>
    <form action="{% url 'board:new' %}" method="POST">
-    <!--액션을 지워도 됨, 어차피 new의 위치에 와있었고 post 이니까 자신의 위치로 돌아감-->
+    <!--액션을 지워도 됨, 어차피 new의 위치에 와있었고 post 이니까 자신의 위치로 돌아감, 현재 위치로 요청이 감-->
        {% csrf_token %}
        <label for="title">TITLE</label>
        <input type="text" id='title' name="title"/>

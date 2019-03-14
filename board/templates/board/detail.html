@@ -21,5 +21,26 @@
         </form>
         <!--<a href="/board/{{ board.pk }}/delete/" onclick="return confirm('R U SURE?')">[삭제]</a>-->
         <hr>
-    {% endblock %}
+        {% for comment in comments %}
+        <li>
+            {{ comment.content }}
+            <form action="{% url 'board:comments_delete' board.pk comment.pk %}"method='POST' onsubmit="return confirm('r u sure?');" style='display:inline'>
+                {% csrf_token %}
+                <input type="submit" value="삭제"/>
+            </form>
+            </li>
+            <!--비어있을 때 조건을 주는 방법-->
+        {% empty %}
+        <p><b>댓글이 없어욤</b></p>
+        {% endfor %}
+        <hr>
+        <p>댓글작성/ {{ comments | length }} 개의 댓글 </p>
+        #댓글 작성하는 곳으로 보내기
+        <form action='{% url 'board:comments_create' board.pk %}' method='POST'>
+            {% csrf_token %}
+            comment : <input type="text" name="content"/>
+            <input type="submit" name="sublit"/>
+        </form>
         
+    {% endblock %}
+
